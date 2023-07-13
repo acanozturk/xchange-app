@@ -1,0 +1,11 @@
+server:
+  port: 8080
+  shutdown: graceful
+  
+spring:
+  mvc:
+    converters:
+      preferred-json-mapper: gson
+
+exchange-rate-api:
+  url: 'https://v6.exchangerate-api.com/v6/fd4af74a12bcd97e42211bee'
