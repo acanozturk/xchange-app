@@ -1,7 +1,7 @@
 package com.xchangeapp.fxrateservice.controller;
 
 import com.google.gson.JsonObject;
-import com.xchangeapp.fxrateservice.data.enumeration.Currency;
+import com.xchangeapp.fxrateservice.data.Currency;
 import com.xchangeapp.fxrateservice.service.FxRateService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

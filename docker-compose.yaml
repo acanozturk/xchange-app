@@ -1,0 +1,143 @@
+version: '3.7'
+
+services:
+  
+  fx-rate-service:
+    image: fx-rate-service
+    ports:
+      - "8080:8080"
+    environment:
+      - "spring.profiles.active=prod, logstash"
+    depends_on:
+      - elasticsearch
+      - logstash
+      - apm-server
+    restart: on-failure
+  
+  setup:
+    profiles:
+      - setup
+    build:
+      context: elk/setup
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    init: true
+    volumes:
+      - ./elk/setup/entrypoint.sh:/entrypoint.sh:ro,Z
+      - ./elk/setup/lib.sh:/lib.sh:ro,Z
+      - ./elk/setup/roles:/roles:ro,Z
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+      METRICBEAT_INTERNAL_PASSWORD: ${METRICBEAT_INTERNAL_PASSWORD:-}
+      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
+      HEARTBEAT_INTERNAL_PASSWORD: ${HEARTBEAT_INTERNAL_PASSWORD:-}
+      MONITORING_INTERNAL_PASSWORD: ${MONITORING_INTERNAL_PASSWORD:-}
+      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    build:
+      context: elk/elasticsearch
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+      - elasticsearch:/usr/share/elasticsearch/data:Z
+    environment:
+      node.name: elasticsearch
+      ES_JAVA_OPTS: -Xms3g -Xmx3g
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      discovery.type: single-node
+    restart: unless-stopped
+
+  logstash:
+    build:
+      context: elk/logstash
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    ports:
+      - "5000:5000"
+      - "5001:5001/tcp"
+      - "5044:5044"
+    volumes:
+      - ./elk/logstash//logs-index-template.json:/usr/share/logstash/logs-index-template.json
+      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+    environment:
+      LS_JAVA_OPTS: -Xms2560m -Xmx2560m
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  kibana:
+    build:
+      context: elk/kibana
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+    environment:
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  fleet-server:
+    build:
+      context: elk/extensions/fleet
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    ports:
+      - "8220:8220"
+    volumes:
+      - fleet-server:/usr/share/elastic-agent/state:Z
+    environment:
+      FLEET_SERVER_ENABLE: '1'
+      FLEET_SERVER_INSECURE_HTTP: '1'
+      FLEET_SERVER_HOST: 0.0.0.0
+      FLEET_SERVER_POLICY_ID: fleet-server-policy
+      KIBANA_FLEET_SETUP: '1'
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
+    hostname: fleet-server
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+      - kibana
+
+  apm-server:
+    build:
+      context: elk/extensions/fleet
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    ports:
+      - "8200:8200"
+    volumes:
+      - apm-server:/usr/share/elastic-agent/state:Z
+    environment:
+      FLEET_ENROLL: '1'
+      FLEET_TOKEN_POLICY_NAME: Agent Policy APM Server
+      FLEET_INSECURE: '1'
+      FLEET_URL: http://fleet-server:8220
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
+    hostname: apm-server
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+      - kibana
+      - fleet-server
+
+volumes:
+  elasticsearch:
+  fleet-server:
+  apm-server:

@@ -9,19 +9,18 @@ spring:
 
 exchange-rate-api:
   url: 'https://v6.exchangerate-api.com/v6/fd4af74a12bcd97e42211bee'
-
+  
 elasticsearch:
-  host: localhost
+  host: elasticsearch
   port: 9200
 
 logstash:
-  host: localhost:5000
+  host: logstash:5000
   
 apm:
   enabled: true
-  environment: dev
-  server-url: http://localhost:8200
+  environment: prod
+  server-url: http://apm-server:8200
   secret-token: apm
   service-name: fx-rate-service
   application-packages: com.xchangeapp
-  
