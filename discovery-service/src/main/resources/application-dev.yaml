@@ -1,0 +1,26 @@
+eureka:
+  client:
+    fetchRegistry: false
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
+  instance:
+    hostname: localhost
+
+logstash:
+  host: localhost:5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
+
+server:
+  port: 8761
+  shutdown: graceful
+
+spring:
+  application:
+    name: discovery-service

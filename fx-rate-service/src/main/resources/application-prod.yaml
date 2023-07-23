@@ -1,12 +1,26 @@
-server:
-  port: 8080
-  shutdown: graceful
-  
-spring:
-  mvc:
-    converters:
-      preferred-json-mapper: gson
-      
+apm:
+  application-packages: com.xchangeapp
+  enabled: true
+  environment: prod
+  secret-token: apm
+  server-url: http://apm-server:8200
+  service-name: fx-rate-service
+
+elasticsearch:
+  host: elasticsearch
+  port: 9200
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service:8761/eureka/
+
+exchange-rate-api:
+  url: 'https://v6.exchangerate-api.com/v6/fd4af74a12bcd97e42211bee'
+
+logstash:
+  host: logstash:5000
+
 management:
   endpoints:
     web:
@@ -14,20 +28,14 @@ management:
         include:
           - prometheus
 
-exchange-rate-api:
-  url: 'https://v6.exchangerate-api.com/v6/fd4af74a12bcd97e42211bee'
-  
-elasticsearch:
-  host: elasticsearch
-  port: 9200
+server:
+  forward-headers-strategy: framework
+  port: 8081
+  shutdown: graceful
 
-logstash:
-  host: logstash:5000
-  
-apm:
-  enabled: true
-  environment: prod
-  server-url: http://apm-server:8200
-  secret-token: apm
-  service-name: fx-rate-service
-  application-packages: com.xchangeapp
+spring:
+  application:
+    name: fx-rate-service
+  mvc:
+    converters:
+      preferred-json-mapper: gson

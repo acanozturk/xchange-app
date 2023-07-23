@@ -13,30 +13,30 @@ public class ElasticsearchApmConfig {
     @Value("${apm.enabled}")
     private boolean enabled;
 
+    @Value("${apm.application-packages}")
+    private String applicationPackages;
+
     @Value("${apm.environment}")
     private String environment;
-
-    @Value("${apm.server-url}")
-    private String serverUrl;
 
     @Value("${apm.secret-token}")
     private String secretToken;
 
+    @Value("${apm.server-url}")
+    private String serverUrl;
+
     @Value("${apm.service-name}")
     private String serviceName;
-
-    @Value("${apm.application-packages}")
-    private String applicationPackages;
 
     @PostConstruct
     public void init() {
         if (enabled) {
             final Map<String, String> apmConfig = Map.of(
+                    "application_packages", applicationPackages,
                     "environment", environment,
-                    "server_url", serverUrl,
                     "secret_token", secretToken,
-                    "service_name", serviceName,
-                    "application_packages", applicationPackages
+                    "server_url", serverUrl,
+                    "service_name", serviceName
             );
 
             ElasticApmAttacher.attach(apmConfig);

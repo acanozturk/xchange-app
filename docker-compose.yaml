@@ -3,17 +3,26 @@ version: '3.7'
 services:
   
   #  Applications
-  fx-rate-service:
-    image: fx-rate-service
-    ports:
-      - "8080:8080"
-    environment:
-      - "spring.profiles.active=prod, logstash"
-    depends_on:
-      - elasticsearch
-      - logstash
-      - apm-server
-    restart: on-failure
+#  discovery-service:
+#    image: discovery-service
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      - "spring.profiles.active=prod, logstash"
+#    restart: on-failure
+#  
+#  fx-rate-service:
+#    image: fx-rate-service
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      - "spring.profiles.active=prod, logstash"
+#    depends_on:
+#      - discovery-service
+#      - elasticsearch
+#    links:
+#      - discovery-service
+#    restart: on-failure
   
   #  Elasticsearch
   setup:
