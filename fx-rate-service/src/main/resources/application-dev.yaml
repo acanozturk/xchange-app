@@ -1,11 +1,18 @@
 server:
   port: 8080
   shutdown: graceful
-  
+
 spring:
   mvc:
     converters:
       preferred-json-mapper: gson
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
 
 exchange-rate-api:
   url: 'https://v6.exchangerate-api.com/v6/fd4af74a12bcd97e42211bee'
@@ -16,7 +23,7 @@ elasticsearch:
 
 logstash:
   host: localhost:5000
-  
+
 apm:
   enabled: true
   environment: dev

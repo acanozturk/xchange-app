@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   
+  #  Applications
   fx-rate-service:
     image: fx-rate-service
     ports:
@@ -14,6 +15,7 @@ services:
       - apm-server
     restart: on-failure
   
+  #  Elasticsearch
   setup:
     profiles:
       - setup
@@ -48,7 +50,7 @@ services:
       - "9300:9300"
     volumes:
       - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
-      - elasticsearch:/usr/share/elasticsearch/data:Z
+      - es-data:/usr/share/elasticsearch/data:Z
     environment:
       node.name: elasticsearch
       ES_JAVA_OPTS: -Xms3g -Xmx3g
@@ -75,6 +77,7 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+    hostname: logstash
 
   kibana:
     build:
@@ -99,7 +102,7 @@ services:
     ports:
       - "8220:8220"
     volumes:
-      - fleet-server:/usr/share/elastic-agent/state:Z
+      - fleet-data:/usr/share/elastic-agent/state:Z
     environment:
       FLEET_SERVER_ENABLE: '1'
       FLEET_SERVER_INSECURE_HTTP: '1'
@@ -108,11 +111,11 @@ services:
       KIBANA_FLEET_SETUP: '1'
       ELASTICSEARCH_USERNAME: elastic
       ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    hostname: fleet-server
     restart: on-failure
     depends_on:
       - elasticsearch
       - kibana
+    hostname: fleet-server
 
   apm-server:
     build:
@@ -122,7 +125,7 @@ services:
     ports:
       - "8200:8200"
     volumes:
-      - apm-server:/usr/share/elastic-agent/state:Z
+      - apm-data:/usr/share/elastic-agent/state:Z
     environment:
       FLEET_ENROLL: '1'
       FLEET_TOKEN_POLICY_NAME: Agent Policy APM Server
@@ -130,14 +133,34 @@ services:
       FLEET_URL: http://fleet-server:8220
       ELASTICSEARCH_USERNAME: elastic
       ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    hostname: apm-server
     restart: on-failure
     depends_on:
       - elasticsearch
       - kibana
       - fleet-server
+    hostname: apm-server
+  
+  #  Monitoring
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus/
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+  
+  grafana:
+    image: grafana/grafana-oss
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
 
 volumes:
-  elasticsearch:
-  fleet-server:
-  apm-server:
+  es-data:
+  fleet-data:
+  apm-data:
+  grafana-data:
