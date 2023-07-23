@@ -21,6 +21,9 @@
     <properties>
         <java.version>20</java.version>
         <spring-cloud.version>2022.0.3</spring-cloud.version>
+        <elasticsearch.version>8.8.0</elasticsearch.version>
+        <jackson-databind.version>2.15.2</jackson-databind.version>
+        <jakarta.json-api.version>2.1.2</jakarta.json-api.version>
         <apm-agent-attach.version>1.40.0</apm-agent-attach.version>
         <gson.version>2.10.1</gson.version>
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
@@ -35,11 +38,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
 
         <dependency>
@@ -61,6 +59,24 @@
             <groupId>co.elastic.apm</groupId>
             <artifactId>apm-agent-attach</artifactId>
             <version>${apm-agent-attach.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>jakarta.json</groupId>
+            <artifactId>jakarta.json-api</artifactId>
+            <version>${jakarta.json-api.version}</version>
         </dependency>
         
         <dependency>

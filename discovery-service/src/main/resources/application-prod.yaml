@@ -3,7 +3,7 @@ eureka:
     fetchRegistry: false
     registerWithEureka: false
     serviceUrl:
-      defaultZone: http://discovery-servicet:${server.port}/eureka/
+      defaultZone: http://discovery-service:${server.port}/eureka/
   instance:
     hostname: localhost
 

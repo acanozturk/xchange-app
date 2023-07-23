@@ -1,6 +1,6 @@
 package com.xchangeapp.fxrateservice.config;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
@@ -24,8 +24,8 @@ public class ElasticsearchConfig {
     private int port;
 
     @Bean
-    public ElasticsearchClient elasticsearchClient() {
-        return new ElasticsearchClient(elasticsearchTransport());
+    public ElasticsearchAsyncClient elasticsearchAsyncClient() {
+        return new ElasticsearchAsyncClient(elasticsearchTransport());
     }
 
     @Bean
@@ -36,7 +36,6 @@ public class ElasticsearchConfig {
     @Bean
     public RestClient restClient() {
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-
         credentialsProvider.setCredentials(
                 AuthScope.ANY,
                 new UsernamePasswordCredentials("elastic", "alican")

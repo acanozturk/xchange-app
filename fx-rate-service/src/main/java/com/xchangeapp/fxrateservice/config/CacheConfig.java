@@ -1,6 +1,6 @@
 package com.xchangeapp.fxrateservice.config;
 
-import com.xchangeapp.fxrateservice.util.CacheConstant;
+import com.xchangeapp.fxrateservice.util.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class CacheConfig {
 
     private static final Set<ConcurrentMapCache> CACHES = Set.of(
-            new ConcurrentMapCache(CacheConstant.FX_RATES)
+            new ConcurrentMapCache(Constant.CACHE_FX_RATES)
     );
 
     @Bean
