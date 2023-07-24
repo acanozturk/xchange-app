@@ -15,8 +15,9 @@ scrape_configs:
     scrape_interval: 2s
     static_configs:
       - targets: [
-        'host.docker.internal:8081',
-        'host.docker.internal:8761'
+        'host.docker.internal:8080', # gateway-service
+        'host.docker.internal:8081', # fx-rate-service
+        'host.docker.internal:8761'  # discovery-service
       ]
         labels:
           application: "Xchange App"
