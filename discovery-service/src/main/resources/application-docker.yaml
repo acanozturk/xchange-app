@@ -11,11 +11,18 @@ logstash:
   host: logstash:5000
 
 management:
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:
         include:
+          - "*"
           - prometheus
+  info:
+    env:
+      enabled: true
 
 server:
   port: 8761
@@ -24,3 +31,7 @@ server:
 spring:
   application:
     name: discovery-service
+  boot:
+    admin:
+      client:
+        url: http://admin-service:8000

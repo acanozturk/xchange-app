@@ -7,7 +7,7 @@
     <logger name="org.springframework" level="ERROR"/>
     <logger name="com.xchangeapp" level="INFO"/>
     
-    <property resource="application-prod.yaml" />
+    <property resource="application-docker.yaml" />
     <springProperty name="LOGSTASH_HOST" source="logstash.host"/>
     <springProperty name="SERVICE_NAME" source="spring.application.name"/>
 

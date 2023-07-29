@@ -9,27 +9,24 @@ logstash:
   host: logstash:5000
 
 management:
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:
         include:
+          - "*"
           - prometheus
+  info:
+    env:
+      enabled: true
 
 server:
   forward-headers-strategy: framework
-  port: 8080
+  port: 8000
   shutdown: graceful
 
 spring:
   application:
-    name: gateway-service
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: route-fx-rate-service
-          uri: lb://fx-rate-service
-          predicates:
-            - Path=/api/fx/**
+    name: admin-service

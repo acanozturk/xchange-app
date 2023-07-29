@@ -1,11 +1,9 @@
 eureka:
-  client:
-    fetchRegistry: false
-    registerWithEureka: false
-    serviceUrl:
-      defaultZone: http://localhost:${server.port}/eureka/
   instance:
     hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 
 logstash:
   host: localhost:5000
@@ -25,13 +23,9 @@ management:
       enabled: true
 
 server:
-  port: 8761
+  port: 8000
   shutdown: graceful
 
 spring:
   application:
-    name: discovery-service
-  boot:
-    admin:
-      client:
-        url: http://localhost:8000
+    name: admin-service

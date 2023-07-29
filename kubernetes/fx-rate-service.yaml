@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fx-rate-service
+  labels:
+    app: fx-rate-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fx-rate-service
+  template:
+    metadata:
+      labels:
+        app: fx-rate-service
+    spec:
+      containers:
+        - name: fx-rate-service
+          image: fx-rate-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes,logstash"
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fx-rate-service
+spec:
+  selector:
+    app: fx-rate-service
+  ports:
+    - protocol: "TCP"
+      port: 8081
+      targetPort: 8081
+  type: NodePort

@@ -1,0 +1,114 @@
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
+
+health:
+  repositories:
+    admin-service-repo:
+      name: admin-service
+      label: main
+      profiles: dev,docker
+    discovery-service-repo:
+      name: discovery-service
+      label: main
+      profiles: dev,docker
+    fx-rate-service-repo:
+      name: fx-rate-service
+      label: main
+      profiles: dev,docker
+    gateway-service-repo:
+      name: gateway-service
+      label: main
+      profiles: dev,docker
+
+logstash:
+  host: localhost:5000
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+          - prometheus
+  info:
+    env:
+      enabled: true
+
+server:
+  port: 8888
+  shutdown: graceful
+
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        default-label: main
+        git:
+          uri: git@github.com:acanozturk/xchange-app/configs
+          clone-on-start: true
+          passphrase: caunos
+          ignore-local-ssh-settings: true
+          private-key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            0+wDA8JogUwkaTULSDn+jspCY=
+            -----END OPENSSH PRIVATE KEY-----
+  security:
+    user:
+      name: admin
+      password: admin
