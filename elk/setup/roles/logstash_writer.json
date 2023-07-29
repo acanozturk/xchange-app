@@ -10,7 +10,7 @@
         "logs-generic-default",
         "logstash-*",
         "ecs-logstash-*",
-        "mtm-logs-*"
+        "xchange-app-logs-*"
       ],
       "privileges": [
         "write",

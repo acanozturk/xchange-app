@@ -8,7 +8,7 @@ eureka:
     hostname: localhost
 
 logstash:
-  host: localhost:5000
+  host: logstash:5000
 
 management:
   endpoints:

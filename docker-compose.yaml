@@ -28,7 +28,7 @@ services:
   gateway-service:
     image: gateway-service
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       - discovery-service
     links:
@@ -99,7 +99,6 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
-    hostname: logstash
 
   kibana:
     build:
