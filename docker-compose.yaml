@@ -12,23 +12,39 @@ services:
 #    depends_on:
 #      discovery-service:
 #        condition: service_healthy
+#    restart: on-failure
 #    links:
 #      - discovery-service
-#    restart: on-failure
 #  
-#  discovery-service:
-#    image: discovery-service
-#    ports:
-#      - "8761:8761"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    healthcheck:
-#      test: "curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1"
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#    restart: on-failure
-#
+  config-service:
+    image: config-service
+    ports:
+      - "8888:8888"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    healthcheck:
+      test: "curl --fail --silent localhost:8888/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  discovery-service:
+    image: discovery-service
+    ports:
+      - "8761:8761"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
 #  fx-rate-service:
 #    image: fx-rate-service
 #    ports:
@@ -42,22 +58,22 @@ services:
 #        condition: service_started
 #      gateway-service:
 #        condition: service_started
+#    restart: on-failure
 #    links:
 #      - discovery-service
-#    restart: on-failure
 #
 #  gateway-service:
 #    image: gateway-service
 #    ports:
 #      - "8080:8080"
+#    environment:
+#      - "spring.profiles.active=docker, logstash"
 #    depends_on:
 #      discovery-service:
 #        condition: service_healthy
+#    restart: on-failure
 #    links:
 #      - discovery-service
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    restart: on-failure
   
   #  Elasticsearch
   setup:
@@ -82,7 +98,8 @@ services:
       MONITORING_INTERNAL_PASSWORD: ${MONITORING_INTERNAL_PASSWORD:-}
       BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_started
 
   elasticsearch:
     build:
@@ -119,7 +136,8 @@ services:
       LS_JAVA_OPTS: -Xms2560m -Xmx2560m
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_started
     restart: unless-stopped
 
   kibana:
@@ -134,7 +152,8 @@ services:
     environment:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_started
     restart: unless-stopped
 
   fleet-server:
@@ -154,10 +173,12 @@ services:
       KIBANA_FLEET_SETUP: '1'
       ELASTICSEARCH_USERNAME: elastic
       ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    restart: on-failure
     depends_on:
-      - elasticsearch
-      - kibana
+      elasticsearch:
+        condition: service_started
+      kibana:
+        condition: service_started
+    restart: on-failure
     hostname: fleet-server
 
   apm-server:
@@ -176,11 +197,14 @@ services:
       FLEET_URL: http://fleet-server:8220
       ELASTICSEARCH_USERNAME: elastic
       ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    restart: on-failure
     depends_on:
-      - elasticsearch
-      - kibana
-      - fleet-server
+      elasticsearch:
+        condition: service_started
+      kibana:
+        condition: service_started
+      fleet-server:
+        condition: service_started
+    restart: on-failure
     hostname: apm-server
   
   #  Monitoring
@@ -190,9 +214,9 @@ services:
       - "9090:9090"
     volumes:
       - ./monitoring/prometheus:/etc/prometheus/
-    restart: unless-stopped
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
+    restart: unless-stopped
   
   grafana:
     image: grafana/grafana-oss

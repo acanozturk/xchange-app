@@ -1,31 +1,7 @@
-#eureka:
-#  instance:
-#    hostname: localhost
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka/
-
-health:
-  repositories:
-    admin-service-repo:
-      name: admin-service
-      label: main
-      profiles: dev,docker
-    discovery-service-repo:
-      name: discovery-service
-      label: main
-      profiles: dev,docker
-    fx-rate-service-repo:
-      name: fx-rate-service
-      label: main
-      profiles: dev,docker
-    gateway-service-repo:
-      name: gateway-service
-      label: main
-      profiles: dev,docker
-
-logstash:
-  host: localhost:5000
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 
 management:
   endpoint:
@@ -53,10 +29,11 @@ spring:
       server:
         default-label: main
         git:
-          uri: git@github.com:acanozturk/xchange-app/configs
+          uri: git@github.com:acanozturk/xchange-app
+          search-paths: configs
           clone-on-start: true
-          passphrase: caunos
           ignore-local-ssh-settings: true
+          passphrase: caunos
           private-key: |
             -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABCiaFbVLX

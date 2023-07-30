@@ -1,12 +1,7 @@
 eureka:
-  instance:
-    hostname: localhost
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-
-logstash:
-  host: localhost:5000
 
 management:
   endpoint:

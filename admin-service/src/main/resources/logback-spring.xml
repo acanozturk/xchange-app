@@ -7,13 +7,9 @@
     <logger name="org.springframework" level="ERROR"/>
     <logger name="com.xchangeapp" level="INFO"/>
     
-    <property resource="application-docker.yaml" />
-    <springProperty name="LOGSTASH_HOST" source="logstash.host"/>
-    <springProperty name="SERVICE_NAME" source="spring.application.name"/>
-
     <springProfile name="logstash">
         <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-            <destination>${LOGSTASH_HOST}</destination>
+            <destination>logstash:5000</destination>
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
                 <customFields>
                     {

@@ -1,9 +1,7 @@
 eureka:
   client:
-    fetchRegistry: false
-    registerWithEureka: false
     serviceUrl:
-      defaultZone: http://localhost:${server.port}/eureka/
+      defaultZone: http://discovery-service:8761/eureka/
 
 management:
   endpoint:
@@ -20,13 +18,9 @@ management:
       enabled: true
 
 server:
-  port: 8761
+  port: 8000
   shutdown: graceful
 
 spring:
   application:
-    name: discovery-service
-  boot:
-    admin:
-      client:
-        url: http://localhost:8000
+    name: admin-service
