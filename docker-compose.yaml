@@ -3,19 +3,19 @@ version: '3.7'
 services:
   
   # Applications
-#  admin-service:
-#    image: admin-service
-#    ports:
-#      - "8000:8000"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    depends_on:
-#      discovery-service:
-#        condition: service_healthy
-#    restart: on-failure
-#    links:
-#      - discovery-service
-#  
+  admin-service:
+    image: admin-service
+    ports:
+      - "8000:8000"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+    restart: on-failure
+    links:
+      - discovery-service
+
   config-service:
     image: config-service
     ports:
@@ -45,35 +45,35 @@ services:
       retries: 5
     restart: on-failure
 
-#  fx-rate-service:
-#    image: fx-rate-service
-#    ports:
-#      - "8081:8081"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    depends_on:
-#      discovery-service:
-#        condition: service_healthy
-#      elasticsearch:
-#        condition: service_started
-#      gateway-service:
-#        condition: service_started
-#    restart: on-failure
-#    links:
-#      - discovery-service
-#
-#  gateway-service:
-#    image: gateway-service
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    depends_on:
-#      discovery-service:
-#        condition: service_healthy
-#    restart: on-failure
-#    links:
-#      - discovery-service
+  fx-rate-service:
+    image: fx-rate-service
+    ports:
+      - "8081-8083:8081"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_started
+      gateway-service:
+        condition: service_started
+    restart: on-failure
+    links:
+      - discovery-service
+
+  gateway-service:
+    image: gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+    restart: on-failure
+    links:
+      - discovery-service
   
   #  Elasticsearch
   setup:
