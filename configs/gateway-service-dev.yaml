@@ -16,6 +16,9 @@ management:
   info:
     env:
       enabled: true
+  tracing:
+    sampling:
+      probability: 0.5
 
 server:
   forward-headers-strategy: framework
@@ -30,8 +33,13 @@ spring:
       discovery:
         locator:
           enabled: true
+      filter:
+        local-response-cache:
+          enabled: true
       routes:
         - id: route-fx-rate-service
           uri: lb://fx-rate-service
           predicates:
             - Path=/api/fx/**
+          filters:
+            - LocalResponseCache=24h,10MB
