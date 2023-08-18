@@ -18,8 +18,10 @@ management:
       enabled: true
   tracing:
     sampling:
-      endpoint: http://zipkin:9411/api/v2/spans
       probability: 0.1
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
 
 server:
   forward-headers-strategy: framework
