@@ -3,78 +3,80 @@ version: '3.7'
 services:
   
   # Applications
-#  admin-service:
-#    image: admin-service
-#    ports:
-#      - "8000:8000"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    depends_on:
-#      discovery-service:
-#        condition: service_healthy
-#    restart: on-failure
-#    links:
-#      - discovery-service
-#
-#  config-service:
-#    image: config-service
-#    ports:
-#      - "8888:8888"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    healthcheck:
-#      test: "curl --fail --silent localhost:8888/actuator/health | grep UP || exit 1"
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#    restart: on-failure
-#
-#  discovery-service:
-#    image: discovery-service
-#    ports:
-#      - "8761:8761"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    depends_on:
-#      config-service:
-#        condition: service_healthy
-#    healthcheck:
-#      test: "curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1"
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#    restart: on-failure
-#
-#  fx-rate-service:
-#    image: fx-rate-service
-#    ports:
-#      - "8081-8083:8081"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    depends_on:
-#      discovery-service:
-#        condition: service_healthy
-#      elasticsearch:
-#        condition: service_started
-#      gateway-service:
-#        condition: service_started
-#    restart: on-failure
-#    links:
-#      - discovery-service
-#
-#  gateway-service:
-#    image: gateway-service
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      - "spring.profiles.active=docker, logstash"
-#    depends_on:
-#      discovery-service:
-#        condition: service_healthy
-#    restart: on-failure
-#    links:
-#      - discovery-service
-    
+  admin-service:
+    image: admin-service
+    ports:
+      - "8000:8000"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+    restart: on-failure
+    links:
+      - discovery-service
+
+  config-service:
+    image: config-service
+    ports:
+      - "8888:8888"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    healthcheck:
+      test: "curl --fail --silent localhost:8888/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  discovery-service:
+    image: discovery-service
+    ports:
+      - "8761:8761"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  fx-rate-service:
+    image: fx-rate-service
+    deploy:
+      replicas: 3
+    ports:
+      - "8081-8083:8081"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_started
+      gateway-service:
+        condition: service_started
+    restart: on-failure
+    links:
+      - discovery-service
+
+  gateway-service:
+    image: gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+    restart: on-failure
+    links:
+      - discovery-service
+  
   zipkin:
     image: openzipkin/zipkin
     ports:
