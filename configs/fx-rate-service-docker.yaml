@@ -33,8 +33,10 @@ management:
       enabled: true
   tracing:
     sampling:
-      endpoint: http://zipkin:9411/api/v2/spans
       probability: 0.5
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
 
 server:
   port: 8081

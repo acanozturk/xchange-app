@@ -3,10 +3,6 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
-logging:
-  level:
-    org.springframework.core.codec.StringDecoder: TRACE
-
 management:
   endpoint:
     health:
@@ -22,8 +18,10 @@ management:
       enabled: true
   tracing:
     sampling:
-      endpoint: http://localhost:9411/api/v2/spans
       probability: 0.5
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
 
 server:
   forward-headers-strategy: framework

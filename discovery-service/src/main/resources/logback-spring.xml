@@ -5,6 +5,7 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework.core.codec.StringDecoder" level="TRACE"/>
     <logger name="com.xchangeapp" level="INFO"/>
 
     <springProfile name="logstash">
