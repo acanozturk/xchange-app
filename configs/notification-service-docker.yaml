@@ -6,7 +6,7 @@ email:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://discovery-server:8761/eureka/
+      defaultZone: http://discovery-service:8761/eureka/
 
 kafka:
   host: kafka:9092

@@ -5,7 +5,7 @@ services:
   # Applications
   admin-service:
     profiles:
-      - services
+      - apps
     image: admin-service
     ports:
       - "8000:8000"
@@ -20,7 +20,7 @@ services:
 
   config-service:
     profiles:
-      - services
+      - apps
     image: config-service
     ports:
       - "8888:8888"
@@ -35,7 +35,7 @@ services:
 
   discovery-service:
     profiles:
-      - services
+      - apps
     image: discovery-service
     ports:
       - "8761:8761"
@@ -53,7 +53,7 @@ services:
 
   fx-rate-service:
     profiles:
-      - services
+      - apps
     image: fx-rate-service
     deploy:
       replicas: 2
@@ -74,7 +74,7 @@ services:
 
   gateway-service:
     profiles:
-      - services
+      - apps
     image: gateway-service
     ports:
       - "8080:8080"
@@ -89,7 +89,7 @@ services:
   
   notification-service:
     profiles:
-      - services
+      - apps
     image: notification-service
     ports:
       - "8100:8100"
@@ -101,14 +101,6 @@ services:
     restart: on-failure
     links:
       - discovery-service
-
-  zipkin:
-    profiles:
-      - es
-    image: openzipkin/zipkin
-    ports:
-      - "9411:9411"
-    restart: on-failure
 
   #  Elasticsearch
   setup:
@@ -274,8 +266,16 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
+  
+  zipkin:
+    profiles:
+      - monitor
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    restart: on-failure
     
-    # Kafka
+  # Kafka
   zookeeper:
     profiles:
       - kafka
