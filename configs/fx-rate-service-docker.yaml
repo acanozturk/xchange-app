@@ -1,6 +1,6 @@
 apm:
   application-packages: com.xchangeapp
-  enabled: true
+  enabled: false
   environment: prod
   secret-token: apm
   server-url: http://apm-server:8200

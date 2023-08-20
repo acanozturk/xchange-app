@@ -55,8 +55,6 @@ services:
     profiles:
       - apps
     image: fx-rate-service
-    deploy:
-      replicas: 2
     ports:
       - "8081-8083:8081"
     environment:
@@ -189,60 +187,60 @@ services:
         condition: service_started
     restart: unless-stopped
 
-  fleet-server:
-    profiles:
-      - es
-    build:
-      context: elk/extensions/fleet
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    ports:
-      - "8220:8220"
-    volumes:
-      - fleet-data:/usr/share/elastic-agent/state:Z
-    environment:
-      FLEET_SERVER_ENABLE: '1'
-      FLEET_SERVER_INSECURE_HTTP: '1'
-      FLEET_SERVER_HOST: 0.0.0.0
-      FLEET_SERVER_POLICY_ID: fleet-server-policy
-      KIBANA_FLEET_SETUP: '1'
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    depends_on:
-      elasticsearch:
-        condition: service_started
-      kibana:
-        condition: service_started
-    restart: on-failure
-    hostname: fleet-server
-
-  apm-server:
-    profiles:
-      - es
-    build:
-      context: elk/extensions/fleet
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    ports:
-      - "8200:8200"
-    volumes:
-      - apm-data:/usr/share/elastic-agent/state:Z
-    environment:
-      FLEET_ENROLL: '1'
-      FLEET_TOKEN_POLICY_NAME: Agent Policy APM Server
-      FLEET_INSECURE: '1'
-      FLEET_URL: http://fleet-server:8220
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    depends_on:
-      elasticsearch:
-        condition: service_started
-      kibana:
-        condition: service_started
-      fleet-server:
-        condition: service_started
-    restart: on-failure
-    hostname: apm-server
+#  fleet-server:
+#    profiles:
+#      - es
+#    build:
+#      context: elk/extensions/fleet
+#      args:
+#        ELASTIC_VERSION: ${ELASTIC_VERSION}
+#    ports:
+#      - "8220:8220"
+#    volumes:
+#      - fleet-data:/usr/share/elastic-agent/state:Z
+#    environment:
+#      FLEET_SERVER_ENABLE: '1'
+#      FLEET_SERVER_INSECURE_HTTP: '1'
+#      FLEET_SERVER_HOST: 0.0.0.0
+#      FLEET_SERVER_POLICY_ID: fleet-server-policy
+#      KIBANA_FLEET_SETUP: '1'
+#      ELASTICSEARCH_USERNAME: elastic
+#      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
+#    depends_on:
+#      elasticsearch:
+#        condition: service_started
+#      kibana:
+#        condition: service_started
+#    restart: on-failure
+#    hostname: fleet-server
+#
+#  apm-server:
+#    profiles:
+#      - es
+#    build:
+#      context: elk/extensions/fleet
+#      args:
+#        ELASTIC_VERSION: ${ELASTIC_VERSION}
+#    ports:
+#      - "8200:8200"
+#    volumes:
+#      - apm-data:/usr/share/elastic-agent/state:Z
+#    environment:
+#      FLEET_ENROLL: '1'
+#      FLEET_TOKEN_POLICY_NAME: Agent Policy APM Server
+#      FLEET_INSECURE: '1'
+#      FLEET_URL: http://fleet-server:8220
+#      ELASTICSEARCH_USERNAME: elastic
+#      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
+#    depends_on:
+#      elasticsearch:
+#        condition: service_started
+#      kibana:
+#        condition: service_started
+#      fleet-server:
+#        condition: service_started
+#    restart: on-failure
+#    hostname: apm-server
 
   #  Monitoring
   prometheus:
