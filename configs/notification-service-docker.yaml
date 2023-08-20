@@ -1,7 +1,7 @@
 email:
   subject: Fx Rates for
-  from: ENC(a54cd464acab79471e2b8a4acbbf2233e9df027a401843d8b95f16789ca010151c9ecd9398b05bb9030f5969ec10d878)
-  to: ENC(7f2a0c6c51d82634391a654a294b6d6bcb11cc25488a74077e8d334e04f6aa691f02babd2fea17151eda4dbf6cc4c12c)
+  from: '{cipher}a54cd464acab79471e2b8a4acbbf2233e9df027a401843d8b95f16789ca010151c9ecd9398b05bb9030f5969ec10d878'
+  to: '{cipher}7f2a0c6c51d82634391a654a294b6d6bcb11cc25488a74077e8d334e04f6aa691f02babd2fea17151eda4dbf6cc4c12c'
 
 eureka:
   client:
@@ -50,8 +50,8 @@ spring:
         transport:
           protocol: smtp
     host: smtp.office365.com
-    username: {cipher}383fad921a4503a94e58954dfe8c80339bafe9b180cdf520ae33002515892bccf49e864e2a2e51c32ec895aa1bf41950
-    password: {cipher}d00852a4d0124080b90d27c9465f0052aa8a3e91692e3cb368172936cfa02a72
+    username: '{cipher}383fad921a4503a94e58954dfe8c80339bafe9b180cdf520ae33002515892bccf49e864e2a2e51c32ec895aa1bf4'
+    password: '{cipher}d00852a4d0124080b90d27c9465f0052aa8a3e91692e3cb368172936cfa02a72'
     port: 587
 
     
