@@ -50,8 +50,8 @@ spring:
         transport:
           protocol: smtp
     host: smtp.office365.com
-    username: '{cipher}383fad921a4503a94e58954dfe8c80339bafe9b180cdf520ae33002515892bccf49e864e2a2e51c32ec895aa1bf4'
-    password: '{cipher}d00852a4d0124080b90d27c9465f0052aa8a3e91692e3cb368172936cfa02a72'
+    username: '{cipher}5d071d75219e32a4d63ffbe212075563a1b346a174055d64d1506da9abfbeb8725b5ae4d74888f9a7dd424a9027f060e'
+    password: '{cipher}61071791fdd40c1fab7993e51e057c2dee7f438cd36f3db612bd3734060d6cda'
     port: 587
 
     
