@@ -17,7 +17,7 @@ import java.time.Instant;
 public class FxRateRepository {
 
     private final ElasticsearchAsyncClient elasticsearchAsyncClient;
-    
+
     @Async
     public void save(JsonObject data) {
         final FxRate fxRate = FxRate.builder()

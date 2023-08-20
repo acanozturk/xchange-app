@@ -23,6 +23,7 @@
         <module>discovery-service</module>
         <module>fx-rate-service</module>
         <module>gateway-service</module>
+        <module>notification-service</module>
     </modules>
     
     <properties>
@@ -77,6 +78,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            
             <dependency>
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-dependencies</artifactId>

@@ -1,0 +1,58 @@
+email:
+  subject: Fx Rates for
+  from: ENC(1b9417139daa5e03be56eb6a98996879abb3864bca06f790bf9101df884951e99e958f0d7fd6b8dd213005d522758444)
+  to: ENC(430411dbc9d0c6a3e11e220e4e367ad0ad50594e5ef94f7613749c0d8cb6e0c99a19f769d132dd42dea01b7f0a035e9e)
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+kafka:
+  host: localhost:9092
+  consumer:
+    concurrency: 1
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+          - prometheus
+  info:
+    env:
+      enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+server:
+  port: 8100
+  shutdown: graceful
+
+spring:
+  application:
+    name: notification-service
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+        transport:
+          protocol: smtp
+    host: smtp.office365.com
+    username: disturbed96@windowslive.com
+    password: 3*Zn?)'ae7g5*E$
+    port: 587
+
+    
+    

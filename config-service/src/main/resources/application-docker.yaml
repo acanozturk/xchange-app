@@ -1,3 +1,6 @@
+encrypt:
+  key: xchange-app
+
 eureka:
   client:
     serviceUrl:

@@ -1,0 +1,58 @@
+email:
+  subject: Fx Rates for
+  from: ENC(a54cd464acab79471e2b8a4acbbf2233e9df027a401843d8b95f16789ca010151c9ecd9398b05bb9030f5969ec10d878)
+  to: ENC(7f2a0c6c51d82634391a654a294b6d6bcb11cc25488a74077e8d334e04f6aa691f02babd2fea17151eda4dbf6cc4c12c)
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-server:8761/eureka/
+
+kafka:
+  host: kafka:9092
+  consumer:
+    concurrency: 1
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+          - prometheus
+  info:
+    env:
+      enabled: true
+  tracing:
+    sampling:
+      probability: 0.1
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+
+server:
+  port: 8100
+  shutdown: graceful
+
+spring:
+  application:
+    name: notification-service
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+        transport:
+          protocol: smtp
+    host: smtp.office365.com
+    username: ENC(383fad921a4503a94e58954dfe8c80339bafe9b180cdf520ae33002515892bccf49e864e2a2e51c32ec895aa1bf41950)
+    password: ENC(d00852a4d0124080b90d27c9465f0052aa8a3e91692e3cb368172936cfa02a72)
+    port: 587
+
+    
+    

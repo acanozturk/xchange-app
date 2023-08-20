@@ -4,6 +4,8 @@ services:
   
   # Applications
   admin-service:
+    profiles:
+      - services
     image: admin-service
     ports:
       - "8000:8000"
@@ -17,6 +19,8 @@ services:
       - discovery-service
 
   config-service:
+    profiles:
+      - services
     image: config-service
     ports:
       - "8888:8888"
@@ -30,6 +34,8 @@ services:
     restart: on-failure
 
   discovery-service:
+    profiles:
+      - services
     image: discovery-service
     ports:
       - "8761:8761"
@@ -46,6 +52,8 @@ services:
     restart: on-failure
 
   fx-rate-service:
+    profiles:
+      - services
     image: fx-rate-service
     deploy:
       replicas: 3
@@ -65,6 +73,8 @@ services:
       - discovery-service
 
   gateway-service:
+    profiles:
+      - services
     image: gateway-service
     ports:
       - "8080:8080"
@@ -77,12 +87,29 @@ services:
     links:
       - discovery-service
   
+  notification-service:
+    profiles:
+      - services
+    image: notification-service
+    ports:
+      - "8100:8100"
+    environment:
+      - "spring.profiles.active=docker, logstash"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+    restart: on-failure
+    links:
+      - discovery-service
+
   zipkin:
+    profiles:
+      - es
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
     restart: on-failure
-  
+
   #  Elasticsearch
   setup:
     profiles:
@@ -110,6 +137,8 @@ services:
         condition: service_started
 
   elasticsearch:
+    profiles:
+      - es
     build:
       context: elk/elasticsearch
       args:
@@ -128,6 +157,8 @@ services:
     restart: unless-stopped
 
   logstash:
+    profiles:
+      - es
     build:
       context: elk/logstash
       args:
@@ -149,6 +180,8 @@ services:
     restart: unless-stopped
 
   kibana:
+    profiles:
+      - es
     build:
       context: elk/kibana
       args:
@@ -165,6 +198,8 @@ services:
     restart: unless-stopped
 
   fleet-server:
+    profiles:
+      - es
     build:
       context: elk/extensions/fleet
       args:
@@ -190,6 +225,8 @@ services:
     hostname: fleet-server
 
   apm-server:
+    profiles:
+      - es
     build:
       context: elk/extensions/fleet
       args:
@@ -214,9 +251,11 @@ services:
         condition: service_started
     restart: on-failure
     hostname: apm-server
-  
+
   #  Monitoring
   prometheus:
+    profiles:
+      - monitor
     image: prom/prometheus
     ports:
       - "9090:9090"
@@ -225,17 +264,52 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
     restart: unless-stopped
-  
+
   grafana:
+    profiles:
+      - monitor
     image: grafana/grafana-oss
     ports:
       - "3000:3000"
     volumes:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
+    
+    # Kafka
+  zookeeper:
+    profiles:
+      - kafka
+    image: bitnami/zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - zk-data:/bitnami
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    profiles:
+      - kafka
+    image: bitnami/kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka-data:/bitnami
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+    depends_on:
+      zookeeper:
+        condition: service_started
+    restart: on-failure
 
 volumes:
   es-data:
   fleet-data:
   apm-data:
   grafana-data:
+  zk-data:
+  kafka-data:
