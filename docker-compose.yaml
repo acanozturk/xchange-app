@@ -56,7 +56,7 @@ services:
       - services
     image: fx-rate-service
     deploy:
-      replicas: 3
+      replicas: 2
     ports:
       - "8081-8083:8081"
     environment:
