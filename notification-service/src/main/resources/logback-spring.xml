@@ -14,7 +14,7 @@
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
                 <customFields>
                     {
-                    "serviceName": "${SERVICE_NAME}",
+                    "serviceName": "notification-service",
                     "host": "${HOSTNAME}"
                     }
                 </customFields>
