@@ -1,7 +1,7 @@
 email:
   subject: Fx Rates for
-  from: ENC(1b9417139daa5e03be56eb6a98996879abb3864bca06f790bf9101df884951e99e958f0d7fd6b8dd213005d522758444)
-  to: ENC(430411dbc9d0c6a3e11e220e4e367ad0ad50594e5ef94f7613749c0d8cb6e0c99a19f769d132dd42dea01b7f0a035e9e)
+  from: {cipher}1b9417139daa5e03be56eb6a98996879abb3864bca06f790bf9101df884951e99e958f0d7fd6b8dd213005d522758444
+  to: {cipher}430411dbc9d0c6a3e11e220e4e367ad0ad50594e5ef94f7613749c0d8cb6e0c99a19f769d132dd42dea01b7f0a035e9e
 
 eureka:
   client:
@@ -50,8 +50,8 @@ spring:
         transport:
           protocol: smtp
     host: smtp.office365.com
-    username: disturbed96@windowslive.com
-    password: 3*Zn?)'ae7g5*E$
+    username: {cipher}383fad921a4503a94e58954dfe8c80339bafe9b180cdf520ae33002515892bccf49e864e2a2e51c32ec895aa1bf41950
+    password: {cipher}d00852a4d0124080b90d27c9465f0052aa8a3e91692e3cb368172936cfa02a72
     port: 587
 
     

@@ -50,8 +50,8 @@ spring:
         transport:
           protocol: smtp
     host: smtp.office365.com
-    username: ENC(383fad921a4503a94e58954dfe8c80339bafe9b180cdf520ae33002515892bccf49e864e2a2e51c32ec895aa1bf41950)
-    password: ENC(d00852a4d0124080b90d27c9465f0052aa8a3e91692e3cb368172936cfa02a72)
+    username: {cipher}383fad921a4503a94e58954dfe8c80339bafe9b180cdf520ae33002515892bccf49e864e2a2e51c32ec895aa1bf41950
+    password: {cipher}d00852a4d0124080b90d27c9465f0052aa8a3e91692e3cb368172936cfa02a72
     port: 587
 
     
