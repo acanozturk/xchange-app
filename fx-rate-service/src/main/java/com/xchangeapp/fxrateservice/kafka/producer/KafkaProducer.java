@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     
-    public void produce(String message) {
+    public void produce(Object message) {
         kafkaTemplate.send(TopicUtil.FX_RATES_TOPIC, message);
     }
     

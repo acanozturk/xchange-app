@@ -18,9 +18,6 @@ eureka:
 exchange-rate-api:
   url: '{cipher}3abd08ff1ca8172fcdaeb570319ad9c93f5c5bc5e8914885fb08b4a69214979e9a6760baa204c6b626673ed9b1e12e290a82479316ed3e80a6317558aeaaef3a2445754cbdc25d1eb6c46b1c405534dd'
 
-kafka:
-  host: localhost:9092
-
 management:
   endpoint:
     health:
@@ -48,6 +45,11 @@ server:
 spring:
   application:
     name: fx-rate-service
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   mvc:
     converters:
       preferred-json-mapper: gson

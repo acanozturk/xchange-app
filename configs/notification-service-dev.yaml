@@ -8,11 +8,6 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
-kafka:
-  host: localhost:9092
-  consumer:
-    concurrency: 1
-
 management:
   endpoint:
     health:
@@ -40,6 +35,14 @@ server:
 spring:
   application:
     name: notification-service
+  kafka:
+    consumer:
+      auto-offset-reset: latest
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      concurrency: 1
   mail:
     properties:
       mail:
